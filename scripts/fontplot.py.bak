@@ -1,0 +1,38 @@
+import math
+import pandas as pd
+import numpy as np
+from PIL import Image
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+
+min_char = 40
+max_char = 40
+fname="/Users/gilfewster/dev/ap/handwriting/fonts/AGENCY.csv"
+
+
+raw=pd.read_csv(fname)
+data = raw.concat([
+    data.iloc[:,data.columns.get_loc('m_label')],
+    data.iloc[:,data.columns.get_loc('italic')],
+    data.iloc[:,data.columns.get_loc('strength')],
+    data.iloc[:,data.columns.get_loc('fontVariant')],
+    data.iloc[:,data.columns.get_loc('r0c0'):data.columns.get_loc('r19c19')+1]], axis=1)
+
+char_filter = (data.m_label.between(min_char,max_char))
+chars = data[char_filter]
+char_count = len(chars.index)
+
+pixdata = chars.iloc[:,1:].to_numpy().reshape(n,20,20).astype('float32')
+normed_values = (pixdata/255) 
+
+# plot figures to previewi
+fig_cols = 15
+fig_rows = math.ceil(char_count/fig_cols)
+fig =  plt.figure(figsize=(fig_cols,fig_rows))
+for row in range(char_count):
+    fig.add_subplot(fig_cols, fig_rows, i+1)
+    plt.imshow(normed_values[row], cmap="gray")
+
+plt.show(block=True)
+
+

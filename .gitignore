@@ -1,0 +1,5 @@
+.DS_Store
+dataset
+logs
+writing_samples
+__pycache__
